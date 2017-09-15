@@ -1,0 +1,75 @@
+/************************************************************
+General
+************************************************************/
+■scriptがaddされた側をclientと呼んでいる.
+
+■【Unity】Unityエディタのフォーカスが外れてもゲームを実行し続ける
+	http://baba-s.hatenablog.com/entry/2014/02/19/000000
+	
+	contents
+		・Unityエディタのメニューから「File>Build Settings...」を選択する
+		・Build Settingsウィンドウの「Player Settings...」を選択する
+		・InspectorビューのPer-Platform Settings項目で「Web Player」または「PC, Mac & Linux Standalone」のタブを選択する
+		・Resolution項目の「Run In Background」をオンにする
+		->これで、Unityエディタでゲームを再生中にブラウザやエクスプローラなど他のアプリケーションにフォーカスを当ててもゲームが常に再生される状態になります
+		
+■firewall
+oFでtestした時は、Firewall offしなければ通らなかったが、unityでは、その必要がなかった.
+また、win/macとも、wifiなどのnetworkから切り、localでのみ接続してtestしたが、動作OK.
+
+一応、win 10でfirewall offする手順は以下
+	http://www.wannko.net/windows10/kihon/firewall.html
+
+
+/************************************************************
+my 操作手順
+************************************************************/
+■UnityOSC で OSC を送信する / MaxMSP で受信する
+	http://neareal.com/2537/
+	
+	変更箇所
+		OSCHandler.cs
+			・Init()
+			
+		OSCController.cs
+	
+	
+	注意
+		OSCController.csの先頭に
+			using UnityOSC;
+		が必要
+		
+		以下のフォルダ内に保存されている
+			/Users/nobuhiro/Documents/source/Unity/Assets 
+		UnityOSC/src フォルダをAssetにFinder上からcopyして使用.
+		これらのscriptは、元のscriptから変更済み.
+		
+□UnityOSC で OSC を受信する / MaxMSP で送信する
+	http://neareal.com/2573/
+	
+	注意
+		UnityOSCは、Queue構造を取っておらず、決められたサイズのBufferを更新し続けるだけ.
+		つまり、dequeue動作がない.
+		
+		このsampleでは、TimeStampを使用して、最新のみをcheckする方法を取っているが、実がこれでは不十分.
+		同じupdate()のtimingで2つ以上の異なるmessageが来た場合に、取りこぼしてしまうので.
+		
+		そこで、次のStepのように、自前でQueue構造を追加する.
+	
+	
+■UnityOSCではまる
+	http://qiita.com/yohki/items/496d9ad345fdd1c9b779
+	
+	
+	
+/************************************************************
+other URL
+************************************************************/
+■UnityOSC : github
+	https://github.com/jorgegarcia/UnityOSC
+	
+■[Unity] [OSC] UnityでOSCを使う（UnityOSC）
+	http://www.jonki.net/entry/20130813/1376398204
+
+■Unity OSCを使いOSCを送受信する
+	http://qiita.com/ya7gisa0/items/6655627e5ca326c6d346
