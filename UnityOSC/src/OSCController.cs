@@ -19,10 +19,11 @@ public class OSCController : MonoBehaviour {
 	****************************************/
 	// params for mac.
 	public string serverId = "win";
-	public string Ip_SendTo = "10.0.0.3";
-	public int Port_SendTo = 12345;
+	// public string Ip_SendTo = "10.0.0.3";
+	public string Ip_SendTo = "127.0.0.1";
+	public int Port_SendTo = 12346;
 	
-	public string clientId = "mac";
+	public string clientId = "win";
 	public int ReceivePort = 12345;
 	
 	// params for win.
@@ -83,6 +84,8 @@ public class OSCController : MonoBehaviour {
 	void Update () {
 		/********************
 		send
+			相手がいないと、ErrorStopするので、相手側を先に起動しておく必要がある.
+			receiveのみの場合は、相手を後で起動しても、問題なかった.
 		********************/
 		// if (Input.GetMouseButtonDown(0))
 		/*
@@ -106,16 +109,18 @@ public class OSCController : MonoBehaviour {
 		while (0 < queue.Count) {
             OSCPacket packet = queue.Dequeue() as OSCPacket;
             if (packet.IsBundle()) {
-                // OSCBundleの場合
                 OSCBundle bundle = packet as OSCBundle;
                 foreach (OSCMessage msg in bundle.Data) {
-                    // メッセージの中身にあわせた処理
+					OSCMessage _msg = msg; // can't touch msg directly, because msg is iterator.
+					
+					if(_msg.Address == "/mouse"){
+						label = "Bundle:(" + msg.Data[0] + ", " + msg.Data[1] + ")";
+					}
                 }
+				
             } else {
-                // OSCMessageの場合はそのまま変換
                 OSCMessage msg = packet as OSCMessage;
 				
-                // メッセージの中身にあわせた処理
 				if(msg.Address == "/mouse"){
 					label = "(" + msg.Data[0] + ", " + msg.Data[1] + ")";
 					
@@ -177,6 +182,6 @@ public class OSCController : MonoBehaviour {
 	{
 		GUI.color = Color.black;
 		
-		GUI.Label(new Rect(15, 15, 100, 30), label);
+		GUI.Label(new Rect(15, 15, 200, 30), label);
 	}
 }
