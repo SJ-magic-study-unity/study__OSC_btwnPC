@@ -50,8 +50,11 @@ public class OSCController : MonoBehaviour {
 	/****************************************
 	****************************************/
 	
-	// Use this for initialization
-	void Start () {
+	/******************************
+	OSCControllerを他のscriptから使う場合、参照が入った時には、すでにOSCHandlerが初期化されていなければいけない。
+	外のscriptでは、Startで本scriptを取りに来るので、本scriptは、それより前、AwakeでOSCHandler.Instance.Init しておく.
+	******************************/
+	void Awake () {
 		OSCHandler.Instance.Init(this.clientId, this.Ip_SendTo, this.Port_SendTo, this.serverId, this.ReceivePort);
 		
 #if USE_QUEUE
@@ -62,6 +65,10 @@ public class OSCController : MonoBehaviour {
         OSCHandler.Instance.PacketReceivedEvent += OnPacketReceived_;
 #endif
 
+	}
+	
+	void Start(){
+		
 	}
 	
 #if USE_QUEUE
