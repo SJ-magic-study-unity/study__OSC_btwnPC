@@ -137,11 +137,11 @@ public class OSCHandler : MonoBehaviour
 	
 	#region Methods
 	
-	/// <summary>
-	/// Ensure that the instance is destroyed when the game is stopped in the Unity editor
-	/// Close all the OSC clients and servers
-	/// </summary>
-	void OnApplicationQuit() 
+	/******************************
+	OnApplicationQuit()で行っていた終了処理をこちらに移動。
+	-> Scene Changeなどでも、clearしてほしいので.
+	******************************/
+	void OnDestroy()
 	{
 		foreach(KeyValuePair<string,ClientLog> pair in _clients)
 		{
@@ -154,6 +154,27 @@ public class OSCHandler : MonoBehaviour
 		}
 			
 		_instance = null;
+	}
+	
+	/// <summary>
+	/// Ensure that the instance is destroyed when the game is stopped in the Unity editor
+	/// Close all the OSC clients and servers
+	/// </summary>
+	void OnApplicationQuit() 
+	{
+		/*
+		foreach(KeyValuePair<string,ClientLog> pair in _clients)
+		{
+			pair.Value.client.Close();
+		}
+		
+		foreach(KeyValuePair<string,ServerLog> pair in _servers)
+		{
+			pair.Value.server.Close();
+		}
+			
+		_instance = null;
+		*/
 	}
 	
 	/// <summary>

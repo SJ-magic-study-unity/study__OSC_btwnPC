@@ -11,6 +11,11 @@
 win-mac間でsimpleなosc test.  
 ![image](./description.JPG)  
 
+tipsについては、本Repositoryを参考に。  
+ただし、OSCの最新sourceは、
+https://github.com/SJ-magic-study-unity/UnityOSC_FixedSomePoints  
+にupする.
+
 
 ## Device ##
 
